@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>avalon-pager</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/amazeui/2.7.2/css/amazeui.min.css">
+    <style>
+    /*vm加载完毕前隐藏 */
+    
+    .ms-controller {
+        display: none;
+    }
+    /* 分页里跳转页面的输入框样式 */
+    
+    .am-pagination-input {
+        display: inline-block;
+        width: 30px;
+        text-align: center;
+        padding: .5em 0;
+        line-height: 1.2;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        margin-bottom: 5px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="am-container ms-controller" :controller="vm">
+        <div class="am-panel am-panel-primary am-margin-top">
+            <div class="am-panel-hd">所有账单</div>
+            <div class="am-panel-bd">
+                <table class="am-table am-table-striped am-table-hover am-text-sm">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>类型</th>
+                            <th>详细信息</th>
+                            <th>交易金额</th>
+                            <th>余额</th>
+                            <th>时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :for="($index,el) in @list">
+                            <td>{{$index+1}}</td>
+                            <td>{{el.FinanceType}}</td>
+                            <td>{{el.Logs}}</td>
+                            <td :class="el.FinanceTypeInOrOut?'am-text-danger':'am-text-success'">{{el.FinanceTypeInOrOut?"-":"+"}}{{el.Money }}</td>
+                            <td>{{el.CurrentMoney}}</td>
+                            <td>{{el.CreatOnTime | date("yyyy-MM-dd hh:mm:ss")}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="am-text-center" :if="@loading">
+                    <i class="am-icon-spinner am-icon-pulse"></i>
+                </div>
+            </div>
+            <div class="am-panel-bd">
+                <!-- 调用分页组件，传递pager参数 -->
+                <ms-pager :widget="@pager"></ms-pager>
+                <!-- wbr支持低版本浏览器 -->
+                <!-- <wbr is="ms-pager" :widget="@pager"/> -->
+            </div>
+        </div>
+    </div>
+    <script src="http://cdn.bootcss.com/avalon.js/2.2.4/avalon.min.js"></script>
+    <script src="pager.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
